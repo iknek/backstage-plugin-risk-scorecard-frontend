@@ -281,15 +281,6 @@ export function deleteScenario(
   }
 }
 
-export function deleteAction(
-  remove: (index?: number | number[]) => void,
-  index: number,
-  onSubmit: () => void,
-) {
-  remove(index);
-  onSubmit();
-}
-
 /**
  * A recursive method for determining if a and b are deeply equal. Keys in the ignoredKeys argument are ignored in the
  * comparison, i.e., they are considered non-existing in both a and b.
