@@ -11,6 +11,8 @@ export const pluginRiScMessages = {
     editEncryption: 'Edit encryption',
     deleteButton: 'Delete scoreboard',
     multipleRiScs: 'RiSc scorecards',
+    lockedRiScsSection:
+      'RiScs you do not have access to — click for encryption key information',
   },
   dictionary: {
     by: 'By',
@@ -734,6 +736,11 @@ export const pluginRiScMessages = {
     outdated: 'Outdated actions',
     listUpdatedActions: 'Recently updated actions',
   },
+  lockedRiScCard: {
+    title: 'No access',
+    description: 'You do not have access to this RoS-analysis.',
+    encryptedWithKey: 'Encrypted with key:',
+  },
   firstRiScCard: {
     noRiScYet: 'Could not load any RoS-analyses',
     getStarted:
@@ -764,6 +771,8 @@ export const pluginRiScNorwegianTranslation = createTranslationResource({
           'contentHeader.editEncryption': 'Rediger kryptering',
           'contentHeader.deleteButton': 'Slett analyse',
           'contentHeader.multipleRiScs': 'RoS-analyser',
+          'contentHeader.lockedRiScsSection':
+            'RoSer du ikke har tilgang til — klikk for informasjon om krypteringsnøkkel',
           'dictionary.rejectedLogin': 'Innlogging avbrutt av bruker.',
           'dictionary.by': 'Av',
           'dictionary.click': 'Klikk',
@@ -1469,6 +1478,10 @@ export const pluginRiScNorwegianTranslation = createTranslationResource({
           'filterButton.veryOutdated': 'Veldig utdaterte tiltak',
           'filterButton.outdated': 'Utdaterte tiltak',
           'filterButton.listUpdatedActions': 'Nylig oppdaterte tiltak',
+          'lockedRiScCard.title': 'Ingen tilgang',
+          'lockedRiScCard.description':
+            'Du har ikke tilgang til denne ROS-analysen.',
+          'lockedRiScCard.encryptedWithKey': 'Kryptert med nøkkel:',
           'firstRiScCard.noRiScYet': 'Kunne ikke laste inn RoS-analyser',
           'firstRiScCard.getStarted':
             'Kom igang med risiko- og sårbarhetsanalyse for ditt team',
