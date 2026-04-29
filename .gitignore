@@ -65,3 +65,7 @@ e2e-test-report/
 /db
 
 playwright/.auth
+
+# Dev-host submodule symlink and patch backup
+.dev-host/plugins/ros
+.dev-host/package.json.bak

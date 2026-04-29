@@ -134,3 +134,58 @@ BREAKING CHANGE: Because whenever you have BREAKING CHANGE at the start of the l
 ```
 
 All other commits will not yield any version bump, but feel free to use prefixes like `chore`, `skip` or `docs` so signalize intent (but it's not that much of a big deal).
+
+## Dev host (kartverket.dev)
+
+The plugin is published to npm and consumed by the real Backstage host at [kartverket.dev](https://github.com/kartverket/kartverket.dev). For local development against that host instead of the lightweight `packages/app` harness, this repo uses kartverket.dev as a git submodule at `.dev-host/`.
+
+### First-time setup
+
+```sh
+git clone --recurse-submodules https://github.com/kartverket/backstage-plugin-risk-scorecard-frontend.git
+cd backstage-plugin-risk-scorecard-frontend
+yarn install
+```
+
+`yarn install` triggers the `postinstall` hook which automatically:
+1. Initializes the `.dev-host` submodule (kartverket.dev).
+2. Symlinks `plugins/ros` into `.dev-host/plugins/ros` so the host sees live source.
+3. Patches `.dev-host/package.json` with a `resolutions` override so Yarn resolves `@kartverket/backstage-plugin-risk-scorecard` from the local workspace instead of npm.
+4. Runs `yarn install` inside `.dev-host`.
+
+Then start the full host:
+
+```sh
+yarn dev:host
+```
+
+### Day-to-day workflow
+
+Edit files under `plugins/ros/**` as usual. Because of the symlink, the host's webpack/Vite dev server picks up changes and hot-reloads automatically — no rebuild step needed.
+
+The existing lightweight harness continues to work unchanged:
+
+```sh
+yarn dev
+```
+
+### Keeping the host up to date
+
+The `.dev-host` submodule is pinned to a specific commit of kartverket.dev. A scheduled GitHub Actions workflow ([`.github/workflows/bump-dev-host.yml`](.github/workflows/bump-dev-host.yml)) runs every Monday at 06:00 UTC and opens a PR if there is a newer commit on kartverket.dev's `main` branch.
+
+To bump manually:
+
+```sh
+yarn bump-host
+```
+
+### Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `.dev-host/` is empty after cloning | `git submodule update --init --recursive` |
+| Bump the host manually | `yarn bump-host` |
+| Reset the patched `package.json` inside the host | `cp .dev-host/package.json.bak .dev-host/package.json` |
+| Nuke and start over | `rm -rf .dev-host && git submodule update --init --recursive && yarn install` |
+| Skip dev-host setup on install (e.g. in CI) | `CI=true yarn install` |
+
