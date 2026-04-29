@@ -45,7 +45,10 @@
     "update:clean//": "echo Removes everything before updating packages",
     "update:clean": "yarn run fresh_clean && yarn run ci",
     "fresh_clean//": "echo Removes everything related to dependencies",
-    "fresh_clean": "yarn run delete_yarn_lock && yarn run rmnm"
+    "fresh_clean": "yarn run delete_yarn_lock && yarn run rmnm",
+    "postinstall": "bash scripts/dev-setup.sh",
+    "dev:host": "cd .dev-host && yarn dev",
+    "bump-host": "git submodule update --remote .dev-host && git add .dev-host && git diff-index --quiet HEAD -- .dev-host || git commit -m 'chore: bump dev-host submodule'"
   },
   "workspaces": {
     "packages": [

@@ -1,0 +1,4 @@
+[submodule ".dev-host"]
+	path = .dev-host
+	url = https://github.com/kartverket/kartverket.dev.git
+	branch = main

@@ -1,0 +1,59 @@
+name: Bump dev-host submodule
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update submodule to latest main
+        id: bump
+        run: |
+          cd .dev-host
+          OLD_SHA=$(git rev-parse HEAD)
+          git fetch origin main
+          git checkout origin/main
+          NEW_SHA=$(git rev-parse HEAD)
+          cd ..
+          echo "old_sha=$OLD_SHA"  >> "$GITHUB_OUTPUT"
+          echo "new_sha=$NEW_SHA"  >> "$GITHUB_OUTPUT"
+          if [ "$OLD_SHA" = "$NEW_SHA" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true"  >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request
+        if: steps.bump.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/bump-dev-host
+          delete-branch: true
+          commit-message: "chore: bump dev-host to ${{ steps.bump.outputs.new_sha }}"
+          title: "chore: bump dev-host submodule"
+          body: |
+            Automated bump of `.dev-host` (kartverket.dev) submodule.
+
+            **From:** `${{ steps.bump.outputs.old_sha }}`
+            **To:**   `${{ steps.bump.outputs.new_sha }}`
+
+            Compare: https://github.com/kartverket/kartverket.dev/compare/${{ steps.bump.outputs.old_sha }}...${{ steps.bump.outputs.new_sha }}
+
+            Merge after CI passes to keep local dev environments aligned with the host.
+          labels: |
+            dependencies
+            automated
