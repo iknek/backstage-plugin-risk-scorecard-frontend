@@ -12,13 +12,18 @@ let pkg;
 try {
   pkg = JSON.parse(fs.readFileSync(hostPackageJsonPath, 'utf8'));
 } catch (err) {
-  console.error(`Error reading or parsing ${hostPackageJsonPath}: ${err.message}`);
+  console.error(
+    `Error reading or parsing ${hostPackageJsonPath}: ${err.message}`,
+  );
   process.exit(1);
 }
 
 // Backup once so devs can always restore
 if (!fs.existsSync(`${hostPackageJsonPath}.bak`)) {
-  fs.writeFileSync(`${hostPackageJsonPath}.bak`, JSON.stringify(pkg, null, 2) + '\n');
+  fs.writeFileSync(
+    `${hostPackageJsonPath}.bak`,
+    JSON.stringify(pkg, null, 2) + '\n',
+  );
 }
 
 pkg.resolutions = {

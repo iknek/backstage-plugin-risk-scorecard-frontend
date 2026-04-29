@@ -43,13 +43,6 @@ dist-types
 # MkDocs build output
 site
 
-# Local configuration files
-*.local.yaml
-app-config*.yaml
-!app-config.example.yaml
-!app-config.production.yaml
-!app-config.yaml
-
 # Sensitive credentials
 *-credentials.yaml
 

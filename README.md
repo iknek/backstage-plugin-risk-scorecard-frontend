@@ -1,6 +1,6 @@
 # Backstage RiSc Plugin
 
-Contains frontend on port `3000` and Backstage backend on port `7007`.
+A Backstage frontend plugin for Risk Scorecard management, published as `@kartverket/backstage-plugin-risk-scorecard`.
 
 ## Tooling
 
@@ -32,28 +32,14 @@ corepack install
 
 <br>
 
-## How to run plugin in Backstage
+## How to run plugin locally
 
-Before running your Backstage app, you want to configure it, which is done with _app-configs_.
-
-### App-config files
-
-Backstage can be heavily configurated, and depends on configuration files when being built.
-These are named `app-config.<env>.yaml`, and in this project two are provided by default. One named `app-config.yaml` and `app-config.production.yaml`.
-For local development, you also have to create the file `app-config.local.yaml`. This file contains the configuration needed to run the app locally, and it is added to the .gitignore-file to avoid leaking secrets in case you set them directly.
+Local development uses the kartverket.dev host (`.dev-host` submodule). See [Dev host (kartverket.dev)](#dev-host-kartverketdev) below for the full setup guide.
 
 ```sh
-cp app-config.example.yaml app-config.local.yaml
+yarn install   # postinstall sets up the dev-host automatically
+yarn dev:host  # boots the full kartverket.dev app with the live plugin
 ```
-
-You can then run Backstage with Backstage RiSc plugin locally by running:
-
-```sh
-yarn install
-yarn dev
-```
-
-<br>
 
 ## Dependency maintenance
 
@@ -148,6 +134,7 @@ yarn install
 ```
 
 `yarn install` triggers the `postinstall` hook which automatically:
+
 1. Initializes the `.dev-host` submodule (kartverket.dev).
 2. Symlinks `plugins/ros` into `.dev-host/plugins/ros` so the host sees live source.
 3. Patches `.dev-host/package.json` with a `resolutions` override so Yarn resolves `@kartverket/backstage-plugin-risk-scorecard` from the local workspace instead of npm.
@@ -163,12 +150,6 @@ yarn dev:host
 
 Edit files under `plugins/ros/**` as usual. Because of the symlink, the host's webpack/Vite dev server picks up changes and hot-reloads automatically — no rebuild step needed.
 
-The existing lightweight harness continues to work unchanged:
-
-```sh
-yarn dev
-```
-
 ### Keeping the host up to date
 
 The `.dev-host` submodule is pinned to a specific commit of kartverket.dev. A scheduled GitHub Actions workflow ([`.github/workflows/bump-dev-host.yml`](.github/workflows/bump-dev-host.yml)) runs every Monday at 06:00 UTC and opens a PR if there is a newer commit on kartverket.dev's `main` branch.
@@ -181,11 +162,10 @@ yarn bump-host
 
 ### Troubleshooting
 
-| Problem | Fix |
-|---|---|
-| `.dev-host/` is empty after cloning | `git submodule update --init --recursive` |
-| Bump the host manually | `yarn bump-host` |
-| Reset the patched `package.json` inside the host | `cp .dev-host/package.json.bak .dev-host/package.json` |
-| Nuke and start over | `rm -rf .dev-host && git submodule update --init --recursive && yarn install` |
-| Skip dev-host setup on install (e.g. in CI) | `CI=true yarn install` |
-
+| Problem                                          | Fix                                                                           |
+| ------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `.dev-host/` is empty after cloning              | `git submodule update --init --recursive`                                     |
+| Bump the host manually                           | `yarn bump-host`                                                              |
+| Reset the patched `package.json` inside the host | `cp .dev-host/package.json.bak .dev-host/package.json`                        |
+| Nuke and start over                              | `rm -rf .dev-host && git submodule update --init --recursive && yarn install` |
+| Skip dev-host setup on install (e.g. in CI)      | `CI=true yarn install`                                                        |

@@ -43,8 +43,8 @@ jobs:
         with:
           branch: chore/bump-dev-host
           delete-branch: true
-          commit-message: "chore: bump dev-host to ${{ steps.bump.outputs.new_sha }}"
-          title: "chore: bump dev-host submodule"
+          commit-message: 'chore: bump dev-host to ${{ steps.bump.outputs.new_sha }}'
+          title: 'chore: bump dev-host submodule'
           body: |
             Automated bump of `.dev-host` (kartverket.dev) submodule.
 
