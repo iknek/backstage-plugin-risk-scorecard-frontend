@@ -10,8 +10,7 @@ This is a Backstage frontend plugin called **RiSc** (Risk Scorecard) published a
 
 ```bash
 yarn ci                  # Install dependencies (immutable)
-yarn dev                 # Start frontend + backend in parallel
-yarn start               # Frontend only
+yarn dev:host            # Start full kartverket.dev host with live plugin
 yarn pipeline            # Full CI check: install, prettier, lint, tsc
 yarn tsc                 # Type check
 yarn tsc:full            # Type check without skipLibCheck
@@ -44,9 +43,8 @@ yarn iup                     # Upgrade non-Backstage packages (interactive)
 ### Monorepo layout
 
 - `plugins/ros/` — The RiSc plugin (all feature code lives here)
-- `packages/app/` — Backstage app shell
-- `packages/backend/` — Backstage backend
 - `build-tools/` — Release automation scripts (workspace member)
+- `.dev-host/` — kartverket.dev submodule (full Backstage host for local dev)
 
 ### Plugin entry points
 
